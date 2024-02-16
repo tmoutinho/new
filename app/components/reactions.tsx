@@ -1,0 +1,48 @@
+'use client';
+
+import { useReactions } from '@/lib/reactions-context';
+import { ReactionModal } from './reaction-modal';
+
+export const Reactions = () => {
+  const { reactions, setSelectedReaction, selectedReaction } = useReactions();
+
+  return (
+    <div className="fixed top-0 left-0 pointer-events-none z-50">
+      {reactions.map((reaction, index) => (
+        <div
+          key={index}
+          className="absolute w-10 h-10 pointer-events-none"
+          style={{
+            left: reaction.x,
+            top: reaction.y,
+          }}
+        >
+          <span
+            className={`absolute w-8 h-8 flex items-center justify-center rounded-full shadow-lg border hover:border-gray-300 cursor-pointer pointer-events-auto opacity-50 ${selectedReaction?.uuid === reaction.uuid ? 'bg-green-500' : 'bg-white'}`}
+            style={{
+              transform: 'translate(-50%, -50%)',
+            }}
+            onClick={() => setSelectedReaction(reaction)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className={`w-5 h-5 ${selectedReaction?.uuid === reaction.uuid ? 'text-white' : 'text-black'}`}
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z"
+              />
+            </svg>
+          </span>
+        </div>
+      ))}
+
+      {selectedReaction && <ReactionModal />}
+    </div>
+  );
+};
